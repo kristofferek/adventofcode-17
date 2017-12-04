@@ -1,4 +1,5 @@
 import Data.List.Split
+import Data.List
 
 -- 1A
 sumOfAdjecents :: [Integer] -> Integer
@@ -42,3 +43,20 @@ spiralDist i = spiralDist' i 3
       where
         circle = (m-1) `div` 2
         innerDist = (((m*m)-circle)-i) `mod` (m-1)
+
+-- 4A
+noDuplicates :: [[String]] -> Int
+noDuplicates [] = 0
+noDuplicates (row:xs) | length row == length (nub row) = 1 + noDuplicates xs
+                      | otherwise = noDuplicates xs
+
+-- 4B
+noMutations :: [[String]] -> Int
+noMutations [] = 0
+noMutations (row:xs) | length row == length (nub row) && rowPermutations row == 0 = 1 + noMutations xs
+                     | otherwise = noMutations xs
+
+rowPermutations :: [String] -> Int
+rowPermutations [] = 0
+rowPermutations (w:ws) = rowPermutations ws +
+                              length (permutations w `intersect` ws)
