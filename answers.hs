@@ -60,3 +60,19 @@ rowPermutations :: [String] -> Int
 rowPermutations [] = 0
 rowPermutations (w:ws) = rowPermutations ws +
                               length (permutations w `intersect` ws)
+
+-- 5A
+listJumps :: [Int] -> Int
+listJumps l = listJumps' l 0 0
+  where
+    len = length l
+    listJumps' l pos steps | pos < 0 || pos >= len = steps
+                           | otherwise = listJumps' (incNth pos l) newPos (steps+1)
+      where newPos = pos + (l !! pos)
+
+incNth :: Int -> [Int] -> [Int]
+incNth n (x:xs) | n == 0 = (x+1):xs
+                | otherwise = x:incNth (n-1) xs
+
+-- 5B
+-- Done in java (See fiveB.java)
