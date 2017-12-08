@@ -1,10 +1,10 @@
-public class fiveB{
+public class jAnswers{
 
   public static void main(String [] args) {
-    System.out.println(solve() + "");
+    System.out.println(fiveB() + "");
   }
 
-  public static int solve(){
+  public static int fiveB(){
     int count = 0;
     int pos = 0;
     int len = input.length;
