@@ -81,4 +81,50 @@ def day7():
         another_kid = children[ans_parent][1]
     print values[ans] - calc_weight(ans) + calc_weight(another_kid)
 
-day7()
+#day7()
+
+def day8():
+    with open("inputs/8.txt") as file:
+        lines = [line.strip().split() for line in file]
+
+    regs = set()
+    for line in lines:
+        regs.add(line[0])
+
+    values = []
+    for reg in regs:
+        values.append(0)
+
+    def reg_index(regName):
+        for index,reg in enumerate(regs):
+            if reg == regName:
+                return index
+
+    def calc_expr(vL, operand, vR):
+        result = {
+            '<': vL<vR,
+            '>': vL>vR,
+            '==': vL==vR,
+            '<=': vL<=vR,
+            '>=': vL>=vR,
+            '!=': vL!=vR
+        }[operand]
+        return result
+
+    highs = set()
+
+    for line in lines:
+        leftVal = values[reg_index(line[4])]
+        if calc_expr(leftVal, line[5], int(line[6])):
+            updateVal = int(line[2])
+            reg_to_update = reg_index(line[0])
+            if line[1] == 'inc':
+                values[reg_to_update] += updateVal
+            if line[1] == 'dec':
+                values[reg_to_update] -= updateVal
+            highs.add(max(values))
+
+    print max(values)
+    print max(highs)
+
+day8()
