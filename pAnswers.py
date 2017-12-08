@@ -1,3 +1,23 @@
+def day5b():
+    with open("inputs/5.txt") as file:
+        nums = [int(line.strip()) for line in file]
+    count = 0
+    pos = 0
+    length = len(nums)
+
+    while (pos>=0 and pos<length):
+        oldPos = pos
+        value = nums[oldPos]
+        pos += value
+
+        if value < 3: nums[oldPos] = value + 1
+        else: nums[oldPos] = value - 1
+        count += 1
+
+    print count
+
+#day5b()
+
 def day6(arr):
     prevLists = []
     count = 0
@@ -112,7 +132,6 @@ def day8():
         return result
 
     highs = set()
-
     for line in lines:
         leftVal = values[reg_index(line[4])]
         if calc_expr(leftVal, line[5], int(line[6])):
@@ -124,7 +143,7 @@ def day8():
                 values[reg_to_update] -= updateVal
             highs.add(max(values))
 
-    print max(values)
-    print max(highs)
+    print 'a:', max(values)
+    print 'b:', max(highs)
 
-day8()
+#day8()

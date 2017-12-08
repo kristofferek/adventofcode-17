@@ -73,19 +73,3 @@ listJumps l = listJumps' l 0 0
 incNth :: Int -> [Int] -> [Int]
 incNth n (x:xs) | n == 0 = (x+1):xs
                 | otherwise = x:incNth (n-1) xs
-
--- 5B
--- Done in java (See fiveB.java)
-
-input = [2,8,8,5,4,2,3,1,5,5,1,2,15,13,5,14] :: [Int]
--- 6A
-memReal :: [Int] -> Int
-memReal a = memReal' [] a 0
-  where
-    memReal' old l t | any (isPrefixOf l) old = t
-                     | otherwise = memReal' (l:old) (zipWith (+) l ones) (t+1)
-      where
-        ones = replicate (maxVal-(4-maxIndex)) 1
-                ++ replicate (4-maxVal) 0
-                ++ replicate (min (4-maxIndex) maxVal) 1
-        (maxVal, maxIndex) = maximum $ zip l [0..]
