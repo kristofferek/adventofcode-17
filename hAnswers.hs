@@ -86,10 +86,11 @@ streamProcess s = countGroups 0 0 $ drop 1 $ remGarbage False s
                                        else x:remGarbage False xs
 countGroups :: Int -> Int -> String -> Int
 countGroups _ val [] = val
-countGroups kids val ('}':xs) = countGroups (kids-1) (val+kids+1) xs
-countGroups kids val ('{':xs) = countGroups (kids+1) val xs
-countGroups kids val (x:xs) = countGroups kids val xs
+countGroups kids val (x:xs) | x=='}' = countGroups (kids-1) (val+kids+1) xs
+                            | x=='{' = countGroups (kids+1) val xs
+                            | otherwise = countGroups kids val xs
 
+-- 9B
 countGarbage :: String -> Int
 countGarbage s = countGarbage' False s 0
   where
