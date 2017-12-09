@@ -73,3 +73,28 @@ listJumps l = listJumps' l 0 0
 incNth :: Int -> [Int] -> [Int]
 incNth n (x:xs) | n == 0 = (x+1):xs
                 | otherwise = x:incNth (n-1) xs
+
+-- 9A
+-- Allready removed all regEx(!.) from inputs/9.txt
+streamProcess :: String -> Int
+streamProcess s = countGroups 0 0 $ drop 1 $ remGarbage False s
+  where
+    remGarbage _ [] = []
+    remGarbage True (x:xs) = if x=='>' then remGarbage False xs
+                                       else remGarbage True xs
+    remGarbage False (x:xs)= if x=='<' then remGarbage True xs
+                                       else x:remGarbage False xs
+countGroups :: Int -> Int -> String -> Int
+countGroups _ val [] = val
+countGroups kids val ('}':xs) = countGroups (kids-1) (val+kids+1) xs
+countGroups kids val ('{':xs) = countGroups (kids+1) val xs
+countGroups kids val (x:xs) = countGroups kids val xs
+
+countGarbage :: String -> Int
+countGarbage s = countGarbage' False s 0
+  where
+    countGarbage' _ [] c = c
+    countGarbage' True (x:xs) c = if x=='>' then countGarbage' False xs c
+                                            else countGarbage' True xs (c+1)
+    countGarbage' False (x:xs) c = if x=='<' then countGarbage' True xs c
+                                             else countGarbage' False xs c
