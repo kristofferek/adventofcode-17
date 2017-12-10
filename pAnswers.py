@@ -147,3 +147,63 @@ def day8():
     print 'b:', max(highs)
 
 #day8()
+
+def day10a():
+    with open('inputs/10.txt') as f:
+        for line in f:
+            lengths = line.strip().split(',')
+
+    seq = range(0,256)
+    skip_size = 0
+    current = 0
+    for elem in lengths:
+        l = int(elem)
+        seq = reverse_sublist(seq, current, (current+l))
+        current += l+skip_size
+        current = current % (len(seq))
+        skip_size += 1
+    print seq[0]*seq[1]
+
+def reverse_sublist(lst,start,end):
+    size = len(lst)
+    if end>=size:
+        wrapped_rev = (lst[start:size] + lst[0:(end%size)])[::-1]
+        lst[start:size] = wrapped_rev[0:(size)-start]
+        lst[0:(end%size)] = wrapped_rev[(size)-start:len(wrapped_rev)]
+    else:
+        lst[start:end] = lst[start:end][::-1]
+    return lst
+
+#day10a()
+
+from operator import xor
+
+def day10b():
+    with open('inputs/10.txt') as f:
+        for line in f:
+            lengths = []
+            for char in line.strip():
+                lengths.append(ord(char))
+            lengths += [17, 31, 73, 47, 23]
+
+    seq = range(0,256)
+    skip_size = 0
+    current = 0
+    for it in range(0,64):
+        for elem in lengths:
+            l = int(elem)
+            seq = reverse_sublist(seq, current, (current+l))
+            current += l+skip_size
+            current = current % (len(seq))
+            skip_size += 1
+
+    ascii_hash = ''
+    chunks_of_16 = [seq[i:i + 16] for i in xrange(0, len(seq), 16)]
+    for chunk in chunks_of_16:
+        xor_res = reduce(xor, chunk)
+        hex_res = hex(xor_res)[2:]
+        if len(hex_res)==1: hex_res = '0'+hex_res
+        ascii_hash += hex_res
+    print ascii_hash
+
+day10b()
