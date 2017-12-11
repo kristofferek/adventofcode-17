@@ -164,19 +164,9 @@ def day10a():
         skip_size += 1
     print seq[0]*seq[1]
 
-def reverse_sublist(lst,start,end):
-    size = len(lst)
-    if end>=size:
-        wrapped_rev = (lst[start:size] + lst[0:(end%size)])[::-1]
-        lst[start:size] = wrapped_rev[0:(size)-start]
-        lst[0:(end%size)] = wrapped_rev[(size)-start:len(wrapped_rev)]
-    else:
-        lst[start:end] = lst[start:end][::-1]
-    return lst
-
 #day10a()
 
-from operator import xor
+import operator as op
 
 def day10b():
     with open('inputs/10.txt') as f:
@@ -200,10 +190,47 @@ def day10b():
     ascii_hash = ''
     chunks_of_16 = [seq[i:i + 16] for i in xrange(0, len(seq), 16)]
     for chunk in chunks_of_16:
-        xor_res = reduce(xor, chunk)
+        xor_res = reduce(op.xor, chunk)
         hex_res = hex(xor_res)[2:]
         if len(hex_res)==1: hex_res = '0'+hex_res
         ascii_hash += hex_res
     print ascii_hash
 
-day10b()
+#day10b()
+
+# Day 10 helper
+def reverse_sublist(lst,start,end):
+    size = len(lst)
+    if end>=size:
+        wrapped_rev = (lst[start:size] + lst[0:(end%size)])[::-1]
+        lst[start:size] = wrapped_rev[0:(size)-start]
+        lst[0:(end%size)] = wrapped_rev[(size)-start:len(wrapped_rev)]
+    else:
+        lst[start:end] = lst[start:end][::-1]
+    return lst
+
+# Solved using 3-D coordinate system
+# Illustration: http://keekerdc.com/wp-content/uploads/2011/03/HexGridLandscapeTriCoordinates.gif
+def day11():
+    with open('inputs/11.txt') as f:
+        for line in f:
+            dirs = line.strip().split(',')
+
+    my_pos = (0,0,0)
+    prev_max_dists = []
+
+    for step in dirs:
+        my_pos = {
+            'sw': tuple(map(op.add, my_pos, (-1,0,1))),
+            'nw': tuple(map(op.add, my_pos, (-1,1,0))),
+            'n':  tuple(map(op.add, my_pos, (0,1,-1))),
+            'ne': tuple(map(op.add, my_pos, (1,0,-1))),
+            'se': tuple(map(op.add, my_pos, (1,-1,0))),
+            's':  tuple(map(op.add, my_pos, (0,-1,1)))
+        }[step]
+        prev_max_dists.append(max(tuple(map(abs, my_pos))))
+
+    print 'a:', max(tuple(map(abs, my_pos)))
+    print 'b:', max(prev_max_dists)
+
+day11()
