@@ -233,4 +233,36 @@ def day11():
     print 'a:', max(tuple(map(abs, my_pos)))
     print 'b:', max(prev_max_dists)
 
-day11()
+#day11()
+
+from collections import deque
+# All , is allready removed from inputs/12.txt
+def day12():
+    with open("inputs/12.txt") as file:
+        connections = [line.strip().replace('<->', '').split() for line in file]
+
+    explored = set()
+    nodes_to_explore = deque([])
+
+    def explore_start_node(start, start_children):
+        explored.add(int(start))
+        map(nodes_to_explore.append, start_children)
+
+        while nodes_to_explore:
+            node = int(nodes_to_explore.popleft())
+            if not node in explored:
+                explored.add(node)
+                map(nodes_to_explore.append, connections[node][1:])
+
+    explore_start_node(connections[0][0], connections[0][1:])
+    print 'a:', len(explored)
+
+    groups = 1
+    for conn in connections:
+        if not int(conn[0]) in explored:
+            explore_start_node(conn[0], conn[1:])
+            groups += 1
+
+    print 'b:', groups
+
+day12()
