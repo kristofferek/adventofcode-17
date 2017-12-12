@@ -236,7 +236,7 @@ def day11():
 #day11()
 
 from collections import deque
-# All , is allready removed from inputs/12.txt
+# All , are removed from inputs/12.txt
 def day12():
     with open("inputs/12.txt") as file:
         connections = [line.strip().replace('<->', '').split() for line in file]
