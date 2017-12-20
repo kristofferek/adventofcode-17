@@ -265,4 +265,29 @@ def day12():
 
     print 'b:', groups
 
-day12()
+#day12()
+
+def day13():
+    with open("inputs/13.txt") as file:
+        firewall = [line.strip().split(': ') for line in file]
+
+    result = 0
+    for depth in firewall:
+        scanner_cycle = (int(depth[1])-1)*2
+        if int(depth[0]) % scanner_cycle == 0:
+            result += int(depth[0]) * int(depth[1])
+    print 'a:', result
+
+    delay = -1
+    caught = True
+    while caught:
+        delay += 1
+        caught = False
+        for depth in firewall:
+            scanner_cycle = (int(depth[1])-1)*2
+            if (int(depth[0])+delay) % scanner_cycle == 0:
+                caught = True
+                break
+    print 'b:', delay
+
+day13()
