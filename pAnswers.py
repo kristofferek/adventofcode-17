@@ -148,6 +148,17 @@ def day8():
 
 #day8()
 
+# Day 10 helper
+def reverse_sublist(lst,start,end):
+    size = len(lst)
+    if end>=size:
+        wrapped_rev = (lst[start:size] + lst[0:(end%size)])[::-1]
+        lst[start:size] = wrapped_rev[0:(size)-start]
+        lst[0:(end%size)] = wrapped_rev[(size)-start:len(wrapped_rev)]
+    else:
+        lst[start:end] = lst[start:end][::-1]
+    return lst
+
 def day10a():
     with open('inputs/10.txt') as f:
         for line in f:
@@ -168,13 +179,15 @@ def day10a():
 
 import operator as op
 
-def day10b():
-    with open('inputs/10.txt') as f:
-        for line in f:
-            lengths = []
-            for char in line.strip():
-                lengths.append(ord(char))
-            lengths += [17, 31, 73, 47, 23]
+def day10b(line):
+    #with open('inputs/10.txt') as f:
+        #for line in f:
+
+    lengths = []
+    for char in line.strip():
+        lengths.append(ord(char))
+    lengths += [17, 31, 73, 47, 23]
+
 
     seq = range(0,256)
     skip_size = 0
@@ -194,20 +207,9 @@ def day10b():
         hex_res = hex(xor_res)[2:]
         if len(hex_res)==1: hex_res = '0'+hex_res
         ascii_hash += hex_res
-    print ascii_hash
+    return ascii_hash
 
 #day10b()
-
-# Day 10 helper
-def reverse_sublist(lst,start,end):
-    size = len(lst)
-    if end>=size:
-        wrapped_rev = (lst[start:size] + lst[0:(end%size)])[::-1]
-        lst[start:size] = wrapped_rev[0:(size)-start]
-        lst[0:(end%size)] = wrapped_rev[(size)-start:len(wrapped_rev)]
-    else:
-        lst[start:end] = lst[start:end][::-1]
-    return lst
 
 # Solved using 3-D coordinate system
 # Illustration: http://keekerdc.com/wp-content/uploads/2011/03/HexGridLandscapeTriCoordinates.gif
@@ -290,4 +292,20 @@ def day13():
                 break
     print 'b:', delay
 
-day13()
+#day13()
+
+def day14():
+    data = 'hfdlxzhv'
+    test = 'flqrgnkx'
+    rows = []
+
+    n = 0
+    for i in xrange(128):
+        v = day10b('%s-%d' % (data, i))
+        v = bin(int(v, 16))[2:]
+        n += sum(map(int, v))
+        rows.append(map(int, v))
+    print 'a:', n
+
+
+day14()
